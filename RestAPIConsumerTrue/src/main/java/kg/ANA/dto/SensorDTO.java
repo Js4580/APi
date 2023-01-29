@@ -2,12 +2,12 @@ package kg.ANA.dto;
 
 
 public class SensorDTO {
-    private String name;
+    private String clientTin;
     public String getName() {
-        return name;
+        return clientTin;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.clientTin = name;
     }
 }

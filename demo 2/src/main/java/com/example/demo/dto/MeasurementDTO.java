@@ -1,41 +1,43 @@
 package com.example.demo.dto;
 
 
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 public class MeasurementDTO {
-    @Min(value = -100, message = "Значение должно быть больше или равно -100")
-    @Max(value = 100, message = "Значение должно быть меньше или равно 100")
-    @NotNull(message = "Это поле не должно оставаться пустым value")
-    private Double value;
-    @NotNull(message = "Это поле не должно оставаться пустым: true или false должно присутсвовать")
-    private Boolean raining;
-    @NotNull(message = "Это поле не должно оставаться пустым sensor")
-    private SensorDTO sensor;
 
-    public Double getValue() {
-        return value;
+    @NotNull(message = "Сумма операции не должно быть пустым")
+    @Min(value = 0, message = "Значение должно быть больше или равно 0")
+    private Double sum;
+
+    @NotNull(message = "Наименование поставщика услуг нерезидента КР заполнить")
+    private String nonresidentName;
+
+    @NotNull(message = "Регистрационный номер точки расчета не должно оставаться пустым")
+    private STSsDTO pointId;
+
+    public Double getSum() {
+        return sum;
     }
 
-    public void setValue(Double value) {
-        this.value = value;
+    public void setSum(Double sum) {
+        this.sum = sum;
     }
 
-    public Boolean getRaining() {
-        return raining;
+    public String getNonresidentName() {
+        return nonresidentName;
     }
 
-    public void setRaining(Boolean raining) {
-        this.raining = raining;
+    public void setNonresidentName(String nonresidentName) {
+        this.nonresidentName = nonresidentName;
     }
 
-    public SensorDTO getSensor() {
-        return sensor;
+    public STSsDTO getPointId() {
+        return pointId;
     }
 
-    public void setSensor(SensorDTO sensor) {
-        this.sensor = sensor;
+    public void setPointId(STSsDTO pointId) {
+        this.pointId = pointId;
     }
 }

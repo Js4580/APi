@@ -1,7 +1,7 @@
 package com.example.demo.utils;
 
 import com.example.demo.models.Measurement;
-import com.example.demo.services.SensorsService;
+import com.example.demo.services.STSsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -9,11 +9,11 @@ import org.springframework.validation.Validator;
 
 @Component
 public class MeasurementValidator implements Validator {
-    private final SensorsService sensorsService;
+    private final STSsService STSsService;
 
     @Autowired
-    public MeasurementValidator(SensorsService sensorsService) {
-        this.sensorsService = sensorsService;
+    public MeasurementValidator(STSsService STSsService) {
+        this.STSsService = STSsService;
     }
 
     @Override
@@ -24,8 +24,8 @@ public class MeasurementValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         Measurement measurement = (Measurement) target;
-        if (measurement.getSensor() == null) return;
-        if (sensorsService.isPresentSensorToDB(measurement.getSensor().getName()).isEmpty())
-            errors.rejectValue("sensor","","Такой сенсор не зарегистрирован в нашем API");
+        if (measurement.getPointId() == null) return;
+        if (STSsService.isPresentClientTinToDB(measurement.getPointId().getClientTin()).isEmpty())
+            errors.rejectValue("pointId","","Такой регистрационный номер точки расчета не зарегистрирован в нашем ГНС");
     }
 }

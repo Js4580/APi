@@ -13,12 +13,12 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class MeasurementsService {
     private final MeasurementsRepository measurementsRepository;
-    private final SensorsService sensorsService;
+    private final STSsService STSsService;
 
     @Autowired
-    public MeasurementsService(MeasurementsRepository measurementsRepository, SensorsService sensorsService) {
+    public MeasurementsService(MeasurementsRepository measurementsRepository, STSsService STSsService) {
         this.measurementsRepository = measurementsRepository;
-        this.sensorsService = sensorsService;
+        this.STSsService = STSsService;
     }
 
     public List<Measurement> allMeasurements(){
@@ -32,7 +32,7 @@ public class MeasurementsService {
     }
 
     private void enrichMeasurement(Measurement measurement) {
-        measurement.setSensor(sensorsService.isPresentSensorToDB(measurement.getSensor().getName()).get());
+        measurement.setPointId(STSsService.isPresentClientTinToDB(measurement.getPointId().getClientTin()).get());
         measurement.setTimestamp(LocalDateTime.now());
     }
 }

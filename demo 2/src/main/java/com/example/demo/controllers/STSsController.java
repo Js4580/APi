@@ -1,13 +1,12 @@
 package com.example.demo.controllers;
 
-import com.example.demo.dto.SensorDTO;
-import com.example.demo.models.Measurement;
-import com.example.demo.models.Sensor;
-import com.example.demo.services.SensorsService;
+import com.example.demo.dto.STSsDTO;
+import com.example.demo.models.STS;
+import com.example.demo.services.STSsService;
 import com.example.demo.utils.ErrorField;
 import com.example.demo.utils.MeasurementException;
 import com.example.demo.utils.MeasurementExceptionResponse;
-import com.example.demo.utils.SensorValidator;
+import com.example.demo.utils.STSsValidator;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,26 +18,26 @@ import javax.validation.Valid;
 import java.time.LocalDateTime;
 
 @RestController
-@RequestMapping("/sensors")
-public class SensorsController {
-    private final SensorsService sensorsService;
-    private final SensorValidator sensorValidator;
+@RequestMapping("/api/point")
+public class STSsController {
+    private final STSsService STSsService;
+    private final STSsValidator STSsValidator;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public SensorsController(SensorsService sensorsService, SensorValidator sensorValidator, ModelMapper modelMapper) {
-        this.sensorsService = sensorsService;
-        this.sensorValidator = sensorValidator;
+    public STSsController(STSsService STSsService, STSsValidator STSsValidator, ModelMapper modelMapper) {
+        this.STSsService = STSsService;
+        this.STSsValidator = STSsValidator;
         this.modelMapper = modelMapper;
     }
 
-    @PostMapping("/registration")
-    public ResponseEntity<HttpStatus> registration(@RequestBody @Valid SensorDTO sensorDTO, BindingResult bindingResult){
-        Sensor sensorFromSensorDTO = convertToSensor(sensorDTO);
-        sensorValidator.validate(sensorFromSensorDTO, bindingResult);
+    @PostMapping("/add")
+    public ResponseEntity<HttpStatus> registration(@RequestBody @Valid STSsDTO STSsDTO, BindingResult bindingResult){
+        STS sensorFromSTSDTO = convertToSensor(STSsDTO);
+        STSsValidator.validate(sensorFromSTSDTO, bindingResult);
         if (bindingResult.hasErrors())
             ErrorField.getErrorField(bindingResult);
-        sensorsService.registration(sensorFromSensorDTO);
+        STSsService.registration(sensorFromSTSDTO);
         return ResponseEntity.ok(HttpStatus.CREATED);
     }
 
@@ -51,7 +50,7 @@ public class SensorsController {
         return new ResponseEntity<>(measurementExceptionResponse, HttpStatus.BAD_REQUEST);
     }
 
-    private Sensor convertToSensor(SensorDTO sensorDTO) {
-        return modelMapper.map(sensorDTO, Sensor.class);
+    private STS convertToSensor(STSsDTO STSsDTO) {
+        return modelMapper.map(STSsDTO, STS.class);
     }
 }

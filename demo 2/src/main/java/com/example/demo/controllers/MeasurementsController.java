@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/measurements")
+@RequestMapping("/api")
 public class MeasurementsController {
     private final MeasurementsService measurementsService;
     private final MeasurementValidator measurementValidator;
@@ -32,18 +32,13 @@ public class MeasurementsController {
         this.modelMapper = modelMapper;
     }
 
-    @GetMapping()
+    @GetMapping("/point/list")
     public MeasurementResponse allMeasurements(){
         return new MeasurementResponse(measurementsService.allMeasurements().stream()
                 .map(this::convertToMeasurementDTO).collect(Collectors.toList()));
     }
 
-    @GetMapping("/rainyDaysCount")
-    public long getRainyDaysCount(){
-        return measurementsService.allMeasurements().stream().filter(Measurement::getRaining).count();
-    }
-
-    @PostMapping("/add")
+    @PostMapping("/operations")
     public ResponseEntity<HttpStatus> addMeasurement(@RequestBody @Valid MeasurementDTO measurementDTO,
                                                      BindingResult bindingResult){
         Measurement measurementFromMeasurementDTO = convertToMeasurement(measurementDTO);

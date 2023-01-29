@@ -4,24 +4,24 @@ package kg.ANA.dto;
 
 
 public class MeasurementDTO {
-    private Double value;
-    private Boolean raining;
+    private Double sum;
+    private Boolean nonresidentName;
     private SensorDTO sensor;
 
     public Double getValue() {
-        return value;
+        return sum;
     }
 
     public void setValue(Double value) {
-        this.value = value;
+        this.sum = value;
     }
 
     public Boolean getRaining() {
-        return raining;
+        return nonresidentName;
     }
 
     public void setRaining(Boolean raining) {
-        this.raining = raining;
+        this.nonresidentName = raining;
     }
 
     public SensorDTO getSensor() {

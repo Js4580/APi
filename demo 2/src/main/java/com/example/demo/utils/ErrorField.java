@@ -14,6 +14,6 @@ public class ErrorField {
             stringErrors.append("поле: ").append(error.getField()).append(" - ")
                     .append(error.getDefaultMessage()).append(";");
         }
-        throw new MeasurementException(stringErrors.toString());
+        throw new CRASException(stringErrors.toString());
     }
 }

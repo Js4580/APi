@@ -1,21 +1,38 @@
-package com.example.demo.dto;
+package com.example.demo.models;
 
-
+import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
-public class MeasurementDTO {
-
+@Entity
+@Table(name = "measurementsts")
+public class CRAS {
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    @Column(name = "sum")
     @NotNull(message = "Сумма операции не должно быть пустым")
     @Min(value = 0, message = "Значение должно быть больше или равно 0")
     private Double sum;
-
+    @Column(name = "nonresidentname")
     @NotNull(message = "Наименование поставщика услуг нерезидента КР заполнить")
     private String nonresidentName;
-
+    @Column(name = "measurement_date_time")
+    private LocalDateTime timestamp;
+    @ManyToOne
+    @JoinColumn(name = "pointid", referencedColumnName = "clienttin")
     @NotNull(message = "Регистрационный номер точки расчета не должно оставаться пустым")
-    private STSsDTO pointId;
+    private STS sensor;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public Double getSum() {
         return sum;
@@ -33,11 +50,19 @@ public class MeasurementDTO {
         this.nonresidentName = nonresidentName;
     }
 
-    public STSsDTO getPointId() {
-        return pointId;
+    public LocalDateTime getTimestamp() {
+        return timestamp;
     }
 
-    public void setPointId(STSsDTO pointId) {
-        this.pointId = pointId;
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public STS getPointId() {
+        return sensor;
+    }
+
+    public void setPointId(STS sensor) {
+        this.sensor = sensor;
     }
 }

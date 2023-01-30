@@ -1,11 +1,12 @@
 package com.example.demo.controllers;
 
-import com.example.demo.dto.STSsDTO;
+import com.example.demo.dto.STSDTO;
+import com.example.demo.dto.STSResponse;
 import com.example.demo.models.STS;
 import com.example.demo.services.STSsService;
 import com.example.demo.utils.ErrorField;
-import com.example.demo.utils.MeasurementException;
-import com.example.demo.utils.MeasurementExceptionResponse;
+import com.example.demo.utils.CRASException;
+import com.example.demo.utils.CRASExceptionResponse;
 import com.example.demo.utils.STSsValidator;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/point")
@@ -32,25 +35,34 @@ public class STSsController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<HttpStatus> registration(@RequestBody @Valid STSsDTO STSsDTO, BindingResult bindingResult){
-        STS sensorFromSTSDTO = convertToSensor(STSsDTO);
+    public Map<String,String> registration(@RequestBody @Valid STSDTO STSDTO, BindingResult bindingResult){
+        STS sensorFromSTSDTO = convertToSensor(STSDTO);
         STSsValidator.validate(sensorFromSTSDTO, bindingResult);
         if (bindingResult.hasErrors())
             ErrorField.getErrorField(bindingResult);
         STSsService.registration(sensorFromSTSDTO);
-        return ResponseEntity.ok(HttpStatus.CREATED);
+        return Map.of("pointId", STSDTO.getClientTin());
     }
 
+    @GetMapping("/list")
+    public STSResponse getAll(){
+        return new STSResponse(STSsService.getAll().stream()
+                .map(this::covertToSTSDTO).collect(Collectors.toList()));
+    }
     @ExceptionHandler
-    private ResponseEntity<MeasurementExceptionResponse> handleException(MeasurementException e){
-        MeasurementExceptionResponse measurementExceptionResponse = new MeasurementExceptionResponse(
+    private ResponseEntity<CRASExceptionResponse> handleException(CRASException e){
+        CRASExceptionResponse CRASExceptionResponse = new CRASExceptionResponse(
                 e.getMessage(),
                 LocalDateTime.now()
         );
-        return new ResponseEntity<>(measurementExceptionResponse, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(CRASExceptionResponse, HttpStatus.BAD_REQUEST);
     }
 
-    private STS convertToSensor(STSsDTO STSsDTO) {
-        return modelMapper.map(STSsDTO, STS.class);
+    private STS convertToSensor(STSDTO STSDTO) {
+        return modelMapper.map(STSDTO, STS.class);
+    }
+
+    private STSDTO covertToSTSDTO(STS sts){
+        return modelMapper.map(sts, STSDTO.class);
     }
 }

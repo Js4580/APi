@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,5 +26,9 @@ public class STSsService {
 
     public Optional<STS> isPresentClientTinToDB(String name){
         return STSsRepository.findByClientTin(name);
+    }
+
+    public List<STS> getAll(){
+        return STSsRepository.findAll();
     }
 }

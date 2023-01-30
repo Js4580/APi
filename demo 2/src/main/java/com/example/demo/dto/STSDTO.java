@@ -3,8 +3,7 @@ package com.example.demo.dto;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
-public class STSsDTO {
-
+public class STSDTO {
     @NotEmpty(message = "ИНН клиента, обязательно к заполнению")
     @Size(max = 14, message = "Банки указывают получателя безналичного платежа и длина не больше 14")
     private String clientTin;

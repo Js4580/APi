@@ -2,11 +2,11 @@ package com.example.demo.utils;
 
 import java.time.LocalDateTime;
 
-public class MeasurementExceptionResponse {
+public class CRASExceptionResponse {
     private String message;
     private LocalDateTime timestamp;
 
-    public MeasurementExceptionResponse(String message, LocalDateTime timestamp) {
+    public CRASExceptionResponse(String message, LocalDateTime timestamp) {
         this.message = message;
         this.timestamp = timestamp;
     }
